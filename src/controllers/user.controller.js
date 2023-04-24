@@ -1,26 +1,35 @@
-import { loginUser, registerUser } from '../services/user.service.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+import * as userModel from '../models/user.model.js';
 
 async function login(request, response) {
   const { username, password } = request.body;
 
   try {
-    const user = await loginUser(username, password);
+    const user = await userModel.getUserByUsername(username);
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
 
-    response
-      .status(200)
-      .cookie('token', user.token, { httpOnly: true })
-      .json({
-        success: true,
-        user: {
-          id: user.id,
-          username: user.username
-        }
-      });
+    if (isPasswordMatch) {
+      const token = jwt.sign(
+        { id: user.id }, process.env.JWT_SECRET, { expiresIn: '30m' }
+      );
+
+      response
+        .status(200)
+        .cookie('token', token, { httpOnly: true })
+        .json({
+          success: true,
+          user: { id: user.id, username: user.username }
+        });
+    } else {
+      throw new Error('incorrect password');
+    }
   } catch (error) {
     response.status(400).json({
       success: false,
-      message: error.message,
-      cause: error?.cause?.message,
+      message: 'failed to login',
+      cause: error.message,
     });
   }
 }
@@ -29,14 +38,20 @@ async function signup(request, response) {
   const { username, password } = request.body;
 
   try {
-    const newUser = await registerUser(username, password);
+    const usernameExist = await userModel.findUserByUsername(username);
 
-    response.status(201).json({ success: true, user: newUser });
+    if (!usernameExist) {
+      const newUser = await userModel.createUser(username, password);
+
+      response.status(201).json({ success: true, user: newUser });
+    } else {
+      throw new Error('username already exists');
+    }
   } catch (error) {
     response.status(400).json({
       success: false,
-      message: error.message,
-      cause: error?.cause?.message,
+      message: 'failed to register user',
+      cause: error.message,
     });
   }
 }

@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 
 import { database } from '../database.js';
 
-
 async function createNote(userId, title, text) {
   return await database.notes.insert({
     id: nanoid(),
@@ -19,12 +18,23 @@ async function findNoteById(id) {
   return await database.notes.findOne({ id });
 }
 
-async function findAllNotesByUserId(userId) {
-  return await database.notes.find({ userId })
+async function getNoteById(id) {
+  const note = await findNoteById(id);
+
+  if (note) {
+    return note;
+  } else {
+    throw new Error(`no note with the id '${id}' exists`);
+  }
+}
+
+async function findAllNotesByUser(user) {
+  return await database.notes.find({ userId: user.id })
 }
 
 export {
   createNote,
-  findAllNotesByUserId,
-  findNoteById
+  getNoteById,
+  findNoteById,
+  findAllNotesByUser
 };

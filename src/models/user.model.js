@@ -16,20 +16,42 @@ async function findUserById(id) {
   return await database.users.findOne({ id });
 }
 
+async function getUserById(id) {
+  const user = await findUserById(id);
+
+  if (user) {
+    return user;
+  } else {
+    throw new Error(`no user with the id '${id}' exists`);
+  }
+}
+
 async function findUserByUsername(username) {
   return await database.users.findOne({ username });
 }
 
-async function pushNote(userId, noteId) {
+async function getUserByUsername(username) {
+  const user = await findUserByUsername(username);
+
+  if (user) {
+    return user;
+  } else {
+    throw new Error(`no user with the username '${username}' exists`);
+  }
+}
+
+async function addNoteToUser(note, user) {
   return await database.users.updateOne(
-    { id: userId },
-    { $push: { notes: noteId } },
+    { id: user.id },
+    { $push: { notes: note.id } },
   );
 }
 
 export {
   createUser,
-  findUserByUsername,
   findUserById,
-  pushNote,
+  getUserById,
+  findUserByUsername,
+  getUserByUsername,
+  addNoteToUser,
 };
