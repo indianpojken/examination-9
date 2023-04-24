@@ -1,6 +1,8 @@
 import * as notesModel from '../models/notes.model.js';
 import * as userModel from '../models/user.model.js';
 
+import { createNoteResponse } from '../helpers.js';
+
 async function getNotes(request, response) {
   const userId = request.user.id;
 
@@ -10,20 +12,12 @@ async function getNotes(request, response) {
 
     response.status(200).json({
       success: true,
-      notes: notes.map((note) => {
-        return {
-          id: note.id,
-          title: note.title,
-          text: note.text,
-          createdAt: note.createdAt,
-          ...(note.modifiedAt && { modifiedAt: note.modifiedAt })
-        }
-      })
+      notes: notes.map((note) => createNoteResponse(note))
     });
   } catch (error) {
     response.status(400).json({
       success: false,
-      message: `failed to fetch notes from user '${user.id}'`,
+      message: `failed to fetch notes from user id '${userId}'`,
       cause: error.message
     });
   }
@@ -41,7 +35,7 @@ async function addNote(request, response) {
 
     response.status(201).json({
       success: true,
-      note: { id: note.id, createdAt: note.createdAt },
+      note: createNoteResponse(note)
     });
   } catch (error) {
     response.status(400).json({
@@ -52,5 +46,63 @@ async function addNote(request, response) {
   }
 }
 
+async function modifyNote(request, response) {
+  const userId = request.user.id;
+  const { noteId } = request.params;
+  const { title, text } = request.body;
 
-export { getNotes, addNote };
+  try {
+    const note = await notesModel.getNoteById(noteId);
+
+    if (note.userId === userId) {
+      await notesModel.updateNote(note, { title, text });
+      const updatedNote = await notesModel.getNoteById(noteId);
+
+      response.status(200).json({
+        success: true,
+        note: createNoteResponse(updatedNote)
+      });
+    } else {
+      throw new Error(`note does not belong to user id '${userId}'`);
+    }
+  } catch (error) {
+    response.status(400).json({
+      success: false,
+      message: 'failed to add note',
+      cause: error.message
+    });
+  }
+}
+
+async function deleteNote(request, response) {
+  const userId = request.user.id;
+  const { noteId } = request.params;
+
+  try {
+    const note = await notesModel.getNoteById(noteId);
+
+    if (note.userId === userId) {
+      await notesModel.removeNote(note);
+
+      response.status(200).json({
+        success: true,
+        note: createNoteResponse(note),
+      });
+    } else {
+      throw new Error(`note does not belong to user id '${userId}'`);
+    }
+  } catch (error) {
+    response.status(400).json({
+      success: false,
+      message: 'failed to add note',
+      cause: error.message
+    });
+  }
+}
+
+export {
+  getNotes,
+  addNote,
+  modifyNote,
+  deleteNote
+};

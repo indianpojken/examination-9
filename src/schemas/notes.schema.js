@@ -5,9 +5,9 @@ const addNoteSchema = joi.object({
   text: joi.string().required()
 });
 
-const updateNoteSchema = joi.object({
+const modifyNoteSchema = joi.object({
   title: joi.string().max(75).required(),
   text: joi.string().required()
 });
 
-export { addNoteSchema, updateNoteSchema };
+export { addNoteSchema, modifyNoteSchema };

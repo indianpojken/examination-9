@@ -43,7 +43,10 @@ async function signup(request, response) {
     if (!usernameExist) {
       const newUser = await userModel.createUser(username, password);
 
-      response.status(201).json({ success: true, user: newUser });
+      response.status(201).json({
+        success: true,
+        user: { id: newUser.id, username: newUser.username }
+      });
     } else {
       throw new Error('username already exists');
     }
