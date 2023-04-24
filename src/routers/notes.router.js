@@ -9,7 +9,7 @@ import * as notesController from '../controllers/notes.controller.js';
 
 const router = Router();
 
-router.get('/', authorize, notesController.get);
-router.post('/', authorize, validate(noteSchema), notesController.post);
+router.get('/', authorize, notesController.getNotes);
+router.post('/', authorize, validate(noteSchema), notesController.addNewNote);
 
 export { router as notesRouter };

@@ -10,7 +10,8 @@ async function login(request, response) {
       .status(200)
       .cookie('token', user.token, { httpOnly: true })
       .json({
-        success: true, user: {
+        success: true,
+        user: {
           id: user.id,
           username: user.username
         }

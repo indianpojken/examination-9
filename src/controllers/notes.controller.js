@@ -5,7 +5,7 @@ import {
 
 import { addNoteToUser } from '../services/user.service.js';
 
-async function get(request, response) {
+async function getNotes(request, response) {
   const userId = request.user.id;
 
   try {
@@ -21,7 +21,7 @@ async function get(request, response) {
   }
 }
 
-async function post(request, response) {
+async function addNewNote(request, response) {
   const userId = request.user.id;
   const { title, text } = request.body;
 
