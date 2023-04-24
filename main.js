@@ -3,6 +3,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 
 import { userRouter } from './src/routers/user.router.js';
+import { notesRouter } from './src/routers/notes.router.js';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/user', userRouter);
+app.use('/api/notes', notesRouter);
 
 app.use((request, response) => {
   response.status(404).json({

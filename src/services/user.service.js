@@ -3,14 +3,35 @@ import jwt from 'jsonwebtoken';
 
 import {
   createUser,
-  getUserById,
-  getUserByUsername
+  findUserByUsername,
+  findUserById,
+  pushNote
 } from '../models/user.model.js';
 
 function generateToken(userId) {
   return jwt.sign(
     { id: userId }, process.env.JWT_SECRET, { expiresIn: '30m' }
   );
+}
+
+async function getUserById(id) {
+  const user = await findUserById(id);
+
+  if (user) {
+    return user;
+  } else {
+    throw new Error(`no user with the id '${id}' exists`);
+  }
+}
+
+async function getUserByUsername(username) {
+  const user = await findUserByUsername(username);
+
+  if (user) {
+    return user;
+  } else {
+    throw new Error(`no user with the username '${username}' exists`);
+  }
 }
 
 async function loginUser(username, password) {
@@ -34,8 +55,7 @@ async function loginUser(username, password) {
 
 async function registerUser(username, password) {
   try {
-    const usernameExist =
-      !!await getUserByUsername(username).catch(() => false);
+    const usernameExist = await findUserByUsername(username);
 
     if (!usernameExist) {
       const newUser = await createUser(username, password);
@@ -49,4 +69,19 @@ async function registerUser(username, password) {
   }
 }
 
-export { loginUser, registerUser };
+async function addNoteToUser(userId, noteId) {
+  try {
+    const user = getUserById(userId);
+    return await pushNote(user.id, noteId);
+  } catch (error) {
+    throw new Error('failed to add note to user', { cause: error });
+  }
+}
+
+export {
+  getUserById,
+  getUserByUsername,
+  loginUser,
+  registerUser,
+  addNoteToUser
+};

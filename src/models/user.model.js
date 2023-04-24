@@ -12,28 +12,24 @@ async function createUser(username, password) {
   });
 }
 
-async function getUserById(id) {
-  const user = await database.users.findOne({ id });
-
-  if (user) {
-    return user;
-  } else {
-    throw new Error(`no user with the id '${id}' exists`);
-  }
+async function findUserById(id) {
+  return await database.users.findOne({ id });
 }
 
-async function getUserByUsername(username) {
-  const user = await database.users.findOne({ username });
+async function findUserByUsername(username) {
+  return await database.users.findOne({ username });
+}
 
-  if (user) {
-    return user;
-  } else {
-    throw new Error(`no user with the username '${username}' exists`);
-  }
+async function pushNote(userId, noteId) {
+  return await database.users.updateOne(
+    { id: userId },
+    { $push: { notes: noteId } },
+  );
 }
 
 export {
   createUser,
-  getUserById,
-  getUserByUsername
+  findUserByUsername,
+  findUserById,
+  pushNote,
 };
