@@ -4,6 +4,13 @@ import * as userModel from '../models/user.model.js';
 import { createNoteResponse } from '../helpers.js';
 
 async function getNotes(request, response) {
+  /*
+  I denna controller och searchNotes har jag varit kluven
+  ifall jag bör kast en error om inga anteckningar finns.
+  Men jag tänker samtidigt att det fortfarande är ett lyckat
+  call och att du får till baka notes och den är tom - för att.
+  sedan hantera detta på frontend.
+  */
   const userId = request.user.id;
 
   try {
@@ -100,9 +107,36 @@ async function deleteNote(request, response) {
   }
 }
 
+async function searchNotes(request, response) {
+  const userId = request.user.id;
+  const { query } = request.query;
+
+  try {
+    if (!query) {
+      throw Error('missing serach query')
+    }
+
+    const user = await userModel.getUserById(userId);
+    const notes = await notesModel.findAllNotesByUser(user);
+    const foundNotes = notesModel.searchNotesByTitle(notes, query);
+
+    response.status(200).json({
+      success: true,
+      notes: foundNotes.map((note) => createNoteResponse(note))
+    });
+  } catch (error) {
+    response.status(400).json({
+      success: false,
+      message: 'failed to search for notes',
+      cause: error.message
+    });
+  }
+}
+
 export {
   getNotes,
   addNote,
   modifyNote,
-  deleteNote
+  deleteNote,
+  searchNotes
 };

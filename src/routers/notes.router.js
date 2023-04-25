@@ -13,5 +13,6 @@ router.get('/', authorize, notesController.getNotes);
 router.post('/', authorize, validate(addNoteSchema), notesController.addNote);
 router.put('/:noteId', authorize, notesController.modifyNote);
 router.delete('/:noteId', authorize, notesController.deleteNote);
+router.get('/search/', authorize, notesController.searchNotes);
 
 export { router as notesRouter };

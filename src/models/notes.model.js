@@ -49,6 +49,12 @@ async function removeNote(note) {
   return await database.notes.removeOne({ id: note.id });
 }
 
+function searchNotesByTitle(notes, query) {
+  return notes.filter((note) =>
+    note.title.toLowerCase().includes(query) === true
+  );
+}
+
 export {
   createNote,
   getNoteById,
@@ -56,4 +62,5 @@ export {
   findAllNotesByUser,
   updateNote,
   removeNote,
+  searchNotesByTitle
 };
