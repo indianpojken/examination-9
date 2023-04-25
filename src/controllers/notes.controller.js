@@ -38,8 +38,6 @@ async function addNote(request, response) {
     const user = await userModel.getUserById(userId);
     const note = await notesModel.createNote(user.id, title, text);
 
-    await userModel.addNoteToUser(note, user);
-
     response.status(201).json({
       success: true,
       note: createNoteResponse(note)

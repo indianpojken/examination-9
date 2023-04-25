@@ -8,7 +8,6 @@ async function createUser(username, password) {
     id: nanoid(),
     username,
     password: await bcrypt.hash(password, 10),
-    notes: [],
   });
 }
 
@@ -40,18 +39,10 @@ async function getUserByUsername(username) {
   }
 }
 
-async function addNoteToUser(note, user) {
-  return await database.users.updateOne(
-    { id: user.id },
-    { $push: { notes: note.id } },
-  );
-}
-
 export {
   createUser,
   findUserById,
   getUserById,
   findUserByUsername,
   getUserByUsername,
-  addNoteToUser,
 };
