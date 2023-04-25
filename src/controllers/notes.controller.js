@@ -22,7 +22,7 @@ async function getNotes(request, response) {
       notes: notes.map((note) => createNoteResponse(note))
     });
   } catch (error) {
-    response.status(400).json({
+    response.status(404).json({
       success: false,
       message: `failed to fetch notes from user id '${userId}'`,
       cause: error.message
@@ -45,7 +45,7 @@ async function addNote(request, response) {
       note: createNoteResponse(note)
     });
   } catch (error) {
-    response.status(400).json({
+    response.status(404).json({
       success: false,
       message: 'failed to add note',
       cause: error.message
@@ -73,7 +73,7 @@ async function modifyNote(request, response) {
       throw new Error(`note does not belong to user id '${userId}'`);
     }
   } catch (error) {
-    response.status(400).json({
+    response.status(404).json({
       success: false,
       message: 'failed to add note',
       cause: error.message
@@ -99,9 +99,9 @@ async function deleteNote(request, response) {
       throw new Error(`note does not belong to user id '${userId}'`);
     }
   } catch (error) {
-    response.status(400).json({
+    response.status(404).json({
       success: false,
-      message: 'failed to add note',
+      message: 'failed to delete note',
       cause: error.message
     });
   }
@@ -125,7 +125,7 @@ async function searchNotes(request, response) {
       notes: foundNotes.map((note) => createNoteResponse(note))
     });
   } catch (error) {
-    response.status(400).json({
+    response.status(404).json({
       success: false,
       message: 'failed to search for notes',
       cause: error.message

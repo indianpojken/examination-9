@@ -26,7 +26,7 @@ async function login(request, response) {
       throw new Error('incorrect password');
     }
   } catch (error) {
-    response.status(400).json({
+    response.status(401).json({
       success: false,
       message: 'failed to login',
       cause: error.message,

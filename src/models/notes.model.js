@@ -9,7 +9,7 @@ async function createNote(userId, title, text) {
     userId,
     title,
     text,
-    createdAt: dayjs().format('DD/MM/YYYY HH:mm:ss'),
+    createdAt: dayjs().format(),
     modifiedAt: ''
   });
 }
@@ -39,7 +39,7 @@ async function updateNote(note, title, text) {
       $set: {
         title,
         text,
-        modifiedAt: dayjs().format('DD/MM/YYYY HH:mm:ss'),
+        modifiedAt: dayjs().format(),
       }
     }
   );
