@@ -62,7 +62,7 @@ async function modifyNote(request, response) {
     const note = await notesModel.getNoteById(noteId);
 
     if (note.userId === userId) {
-      await notesModel.updateNote(note, { title, text });
+      await notesModel.updateNote(note, title, text);
       const updatedNote = await notesModel.getNoteById(noteId);
 
       response.status(200).json({

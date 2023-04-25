@@ -1,2 +1,3 @@
 node_modules
 // leaving out .env on purpose
+*.db

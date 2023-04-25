@@ -32,13 +32,13 @@ async function findAllNotesByUser(user) {
   return await database.notes.find({ userId: user.id })
 }
 
-async function updateNote(note, data = { title, text }) {
+async function updateNote(note, title, text) {
   return await database.notes.updateOne(
     { id: note.id },
     {
       $set: {
-        ...(data.title && { title: data.title }),
-        ...(data.text && { text: data.text }),
+        title,
+        text,
         modifiedAt: dayjs().format('DD/MM/YYYY HH:mm:ss'),
       }
     }
