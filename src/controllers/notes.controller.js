@@ -4,13 +4,6 @@ import * as userModel from '../models/user.model.js';
 import { createNoteResponse } from '../helpers.js';
 
 async function getNotes(request, response) {
-  /*
-  I denna controller och searchNotes har jag varit kluven
-  ifall jag bör kast en error om inga anteckningar finns.
-  Men jag tänker samtidigt att det fortfarande är ett lyckat
-  call och att du får till baka notes och den är tom - för att.
-  sedan hantera detta på frontend.
-  */
   const userId = request.user.id;
 
   try {
