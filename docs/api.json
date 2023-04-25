@@ -25,9 +25,16 @@
           },
           "modifiedAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "available if note has been modified"
           }
-        }
+        },
+        "required": [
+          "id",
+          "title",
+          "text",
+          "createdAt"
+        ]
       },
       "User": {
         "type": "object",
