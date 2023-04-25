@@ -527,7 +527,7 @@
             }
           },
           "400": {
-            "description": "Login failed",
+            "description": "Sign up failed",
             "content": {
               "application/json": {
                 "schema": {
