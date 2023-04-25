@@ -5,7 +5,7 @@ function authorize(request, response, next) {
 
   try {
     if (!token) {
-      throw new Error('no token provided');
+      throw new Error('missing token - login required');
     }
 
     request.user = jwt.verify(token, process.env.JWT_SECRET);
