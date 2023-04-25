@@ -86,11 +86,11 @@
         "tags": [
           "Notes"
         ],
-        "summary": "Get all notes",
-        "description": "Get all notes from the currently logged in user",
+        "summary": "Get note(s)",
+        "description": "Get note(s) from the currently logged in user",
         "responses": {
           "200": {
-            "description": "Get all notes",
+            "description": "Got note(s)",
             "content": {
               "application/json": {
                 "schema": {
@@ -126,7 +126,7 @@
             }
           },
           "404": {
-            "description": "Failed to get notes",
+            "description": "Failed to get note(s)",
             "content": {
               "application/json": {
                 "schema": {
@@ -367,8 +367,8 @@
         "tags": [
           "Notes"
         ],
-        "summary": "Get all notes that match the query",
-        "description": "Get all notes that match the query from the currently logged in user",
+        "summary": "Get note(s) that match with the query",
+        "description": "Get note(s) from the currently logged in user, whose title matches with the query",
         "parameters": [
           {
             "name": "query",
@@ -382,7 +382,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get all notes",
+            "description": "Got matching note(s)",
             "content": {
               "application/json": {
                 "schema": {
@@ -418,7 +418,7 @@
             }
           },
           "404": {
-            "description": "Failed to get notes",
+            "description": "Failed to get note(s)",
             "content": {
               "application/json": {
                 "schema": {
@@ -435,8 +435,8 @@
         "tags": [
           "User"
         ],
-        "description": "Login with a user",
-        "summary": "Login user",
+        "description": "Login with user",
+        "summary": "Login",
         "requestBody": {
           "required": true,
           "content": {
@@ -493,8 +493,8 @@
         "tags": [
           "User"
         ],
-        "description": "Sign up a user",
-        "summary": "Login user",
+        "description": "Sign up to register a user",
+        "summary": "Sign up",
         "requestBody": {
           "required": true,
           "content": {
