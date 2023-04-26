@@ -66,7 +66,7 @@ async function modifyNote(request, response) {
   } catch (error) {
     response.status(404).json({
       success: false,
-      message: 'failed to add note',
+      message: 'failed to modify note',
       cause: error.message
     });
   }
@@ -104,7 +104,7 @@ async function searchNotes(request, response) {
 
   try {
     if (!query) {
-      throw Error('missing serach query')
+      throw Error('missing serach query');
     }
 
     const user = await userModel.getUserById(userId);
