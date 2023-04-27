@@ -29,7 +29,9 @@ async function getNoteById(id) {
 }
 
 async function findAllNotesByUser(user) {
-  return await database.notes.find({ userId: user.id });
+  return await database.notes
+    .find({ userId: user.id })
+    .sort({ createdAt: -1 });
 }
 
 async function updateNote(note, title, text) {
